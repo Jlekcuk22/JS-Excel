@@ -15,6 +15,24 @@ module.exports = (env, argv) => {
   const filename = (ext) =>
     isProd ? `[name].[contenthash].bundle.${ext}` : `[name].bundle.${ext}`
 
+  const jsLoaders = () => {
+    const loaders = [
+      {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
+          plugins: ['@babel/plugin-proposal-class-properties']
+        }
+      }
+    ]
+
+    if (isDev) {
+      loaders.push('eslint-loader')
+    }
+
+    return loaders
+  }
+
   const plugins = () => {
     const base = [
       new HtmlWebpackPlugin({
